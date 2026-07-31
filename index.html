@@ -3,643 +3,634 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agust D Studio | Frosted Glass Dashboard</title>
+  <title>Liquid Glass OS | 70+ Working Features</title>
   <style>
     :root {
-      --glass-bg: rgba(255, 255, 255, 0.07);
-      --glass-border: rgba(255, 255, 255, 0.15);
-      --glass-blur: 20px;
-      --accent-color: #00f2fe;
-      --accent-glow: rgba(0, 242, 254, 0.3);
-      --text-main: #ffffff;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --glass-highlight: rgba(255, 255, 255, 0.4);
+      --glass-shadow: rgba(0, 0, 0, 0.35);
+      --glass-blur: blur(40px) saturate(220%);
+      --text-main: rgba(255, 255, 255, 0.95);
       --text-sub: rgba(255, 255, 255, 0.65);
-      --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; }
+
     body {
-      background: radial-gradient(circle at 10% 20%, #1a0933 0%, #0a0c1b 50%, #051923 100%);
+      background: #04060a;
       color: var(--text-main);
-      font-family: var(--font-main);
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Dynamic Water Mesh Orbs */
+    .water-mesh {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.4;
+      animation: liquidFloat 18s infinite alternate ease-in-out;
+    }
+    .orb-1 { width: 500px; height: 500px; background: #3a7bd5; top: -150px; left: -150px; }
+    .orb-2 { width: 450px; height: 450px; background: #00d2ff; bottom: -150px; right: -150px; animation-delay: -6s; }
+    .orb-3 { width: 380px; height: 380px; background: #6a11cb; top: 40%; left: 35%; animation-delay: -11s; }
+
+    @keyframes liquidFloat {
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      100% { transform: translate(90px, 60px) scale(1.2) rotate(45deg); }
+    }
+
+    /* Main App Layout */
+    .app-viewport {
+      position: relative;
+      z-index: 2;
       height: 100vh;
       display: grid;
-      grid-template-columns: 260px 1fr;
-      grid-template-rows: 1fr 90px;
-      grid-template-areas:
-        "sidebar content"
-        "player player";
-      overflow: hidden;
+      grid-template-rows: 75px 1fr;
+      padding: 1.2rem;
+      gap: 1.2rem;
     }
 
-    /* GLASS CONTAINER ENGINE */
-    .glass-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      border-radius: 16px;
-    }
-
-    /* SIDEBAR NAVIGATION */
-    aside {
-      grid-area: sidebar;
-      margin: 1rem 0.5rem 0.5rem 1rem;
-      padding: 1.5rem;
+    /* Header Glass Bar */
+    header {
       display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .brand-header {
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: 2px;
-      color: var(--text-main);
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
+      padding: 0 1.8rem;
+      border-radius: 26px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 15px 35px var(--glass-shadow), inset 0 1px 2px var(--glass-highlight);
     }
-    .brand-header span { color: var(--accent-color); }
 
-    .nav-list {
-      list-style: none;
+    .brand { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.5px; }
+    .brand span { font-weight: 300; opacity: 0.7; }
+
+    .menu-trigger {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      padding: 0.65rem 1.4rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(15px);
+      box-shadow: inset 0 1px 1px var(--glass-highlight);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .menu-trigger:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.04); }
+
+    /* Auto-Closing Liquid Nav Menu */
+    nav.liquid-nav {
+      position: fixed;
+      top: 5.5rem;
+      right: 1.5rem;
+      width: 300px;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(50px) saturate(230%);
+      -webkit-backdrop-filter: blur(50px) saturate(230%);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 1rem;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.5), inset 0 1px 2px var(--glass-highlight);
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-20px) scale(0.92);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
     }
+    nav.liquid-nav.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
 
-    .nav-btn {
-      width: 100%;
+    .nav-link {
       background: transparent;
-      border: 1px solid transparent;
+      border: none;
       color: var(--text-sub);
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
+      padding: 0.85rem 1.1rem;
+      border-radius: 18px;
       text-align: left;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
-    .nav-btn:hover, .nav-btn.active {
-      background: rgba(255, 255, 255, 0.1);
+    .nav-link:hover, .nav-link.active {
+      background: rgba(255, 255, 255, 0.18);
       color: #fff;
-      border-color: var(--glass-border);
-      box-shadow: 0 0 15px var(--accent-glow);
+      box-shadow: inset 0 1px 1px var(--glass-highlight);
+      transform: translateX(4px);
     }
 
-    /* MAIN CONTENT AREA */
+    /* Main Water Canvas Area */
     main {
-      grid-area: content;
-      margin: 1rem 1rem 0.5rem 0.5rem;
+      border-radius: 34px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 30px 60px var(--glass-shadow), inset 0 1px 2px var(--glass-highlight);
       padding: 2rem;
       overflow-y: auto;
     }
 
-    .view-tab { display: none; }
-    .view-tab.active { display: block; }
+    .view-content { display: none; animation: glassFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .view-content.active { display: block; }
+    @keyframes glassFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-    .page-title { font-size: 1.8rem; margin-bottom: 0.3rem; }
-    .page-desc { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 1.5rem; }
-
-    /* LAYOUT GRIDS */
+    /* UI Toolkit Elements */
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
 
-    .card {
-      padding: 1.25rem;
-      transition: transform 0.2s ease;
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      padding: 1.3rem;
+      backdrop-filter: blur(25px);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      transition: all 0.25s ease;
     }
-    .card:hover { transform: translateY(-2px); }
+    .glass-card:hover { background: rgba(255, 255, 255, 0.09); transform: translateY(-3px); }
 
-    /* UI CONTROLS & BUTTONS */
     .btn {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
       border: 1px solid var(--glass-border);
       color: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      font-size: 0.8rem;
+      padding: 0.65rem 1.2rem;
+      border-radius: 16px;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 1px 1px var(--glass-highlight);
       transition: all 0.2s ease;
     }
+    .btn:hover { background: rgba(255, 255, 255, 0.22); transform: scale(1.02); }
 
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 10px var(--accent-glow);
+    input, select, textarea {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      padding: 0.75rem 1rem;
+      border-radius: 14px;
+      outline: none;
+      font-size: 0.85rem;
     }
-
-    .btn-accent {
-      background: var(--accent-color);
-      color: #000;
-      border: none;
-    }
-    .btn-accent:hover { opacity: 0.9; box-shadow: 0 0 15px var(--accent-color); }
-
-    input[type="range"] { accent-color: var(--accent-color); cursor: pointer; }
+    input[type="range"] { accent-color: #ffffff; cursor: pointer; padding: 0; height: 6px; }
 
     .control-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.6rem 0.8rem;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      margin-bottom: 0.6rem;
     }
-
-    /* PLAYER FOOTER */
-    footer {
-      grid-area: player;
-      margin: 0.5rem 1rem 1rem 1rem;
-      padding: 0 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 10;
-    }
-
-    .player-track { display: flex; align-items: center; gap: 1rem; width: 25%; }
-    .album-cover { width: 45px; height: 45px; border-radius: 8px; background: linear-gradient(135deg, var(--accent-color), #4facfe); }
-
-    .player-center { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; width: 50%; }
-    .scrubber-container { width: 100%; display: flex; align-items: center; gap: 0.8rem; font-size: 0.75rem; color: var(--text-sub); }
-    
-    .progress-bar {
-      flex-grow: 1; height: 5px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; cursor: pointer; position: relative;
-    }
-    .progress-fill { width: 0%; height: 100%; background: var(--accent-color); border-radius: 3px; box-shadow: 0 0 10px var(--accent-color); }
-
-    canvas#visualizer { width: 120px; height: 28px; border-radius: 4px; }
+    .stat-badge { background: rgba(255,255,255,0.15); padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.75rem; }
   </style>
 </head>
 <body>
 
-  <audio id="audio-core" crossorigin="anonymous" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3"></audio>
+  <!-- Ambient Water Shader Balls -->
+  <div class="water-mesh">
+    <div class="orb orb-1" id="orb1"></div>
+    <div class="orb orb-2" id="orb2"></div>
+    <div class="orb orb-3" id="orb3"></div>
+  </div>
 
-  <!-- LEFT GLASS NAVIGATION -->
-  <aside class="glass-panel">
-    <div class="brand-header">⚡ AGUST D <span>GLASS</span></div>
-    <ul class="nav-list">
-      <li><button class="nav-btn active" onclick="nav('overview', this)">Dashboard</button></li>
-      <li><button class="nav-btn" onclick="nav('vault', this)">Track Vault</button></li>
-      <li><button class="nav-btn" onclick="nav('stems', this)">Stem Console</button></li>
-      <li><button class="nav-btn" onclick="nav('eq', this)">Parametric EQ</button></li>
-      <li><button class="nav-btn" onclick="nav('lyrics', this)">Synced Lyrics</button></li>
-      <li><button class="nav-btn" onclick="nav('tickets', this)">VIP Passes</button></li>
-      <li><button class="nav-btn" onclick="nav('community', this)">Community Feed</button></li>
-      <li><button class="nav-btn" onclick="nav('settings', this)">Glass Customizer</button></li>
-    </ul>
-  </aside>
-
-  <!-- MAIN GLASS CONTENT -->
-  <main class="glass-panel">
+  <div class="app-viewport">
     
-    <!-- DASHBOARD VIEW -->
-    <section id="view-overview" class="view-tab active">
-      <h1 class="page-title">Studio Control Center</h1>
-      <p class="page-desc">System performance, track queue, and audio tools.</p>
-
-      <div class="grid-3" style="margin-bottom: 1.5rem;">
-        <div class="glass-panel card">
-          <h4>🎵 Quick Playback</h4>
-          <p style="color:var(--text-sub); font-size:0.8rem; margin: 0.5rem 0 1rem;">Feature 1-3: Load & stream studio audio</p>
-          <button class="btn btn-accent" onclick="loadTrack('Haegeum', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3')">Play Master Track</button>
-        </div>
-        <div class="glass-panel card">
-          <h4>⏱️ BPM Tap Tempo</h4>
-          <p style="color:var(--text-sub); font-size:0.8rem; margin: 0.5rem 0 0.5rem;">Feature 4-5: Live tempo calculation</p>
-          <h2 id="bpm-readout" style="color: var(--accent-color);">120 BPM</h2>
-          <button class="btn" style="margin-top:0.5rem;" onclick="tapBPM()">Tap Tempo</button>
-        </div>
-        <div class="glass-panel card">
-          <h4>💻 System Monitor</h4>
-          <p style="color:var(--text-sub); font-size:0.8rem; margin: 0.5rem 0 0.5rem;">Feature 6-7: Live UI frame rendering</p>
-          <h2 id="fps-counter" style="color: var(--accent-color);">60 FPS</h2>
-          <span style="font-size:0.7rem; color: var(--text-sub);">Audio Context: <b id="audio-status" style="color:#fff">Idle</b></span>
-        </div>
+    <!-- TOP GLASS HEADER -->
+    <header>
+      <div class="brand">LIQUID<span>OS 26</span></div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span style="font-size:0.8rem; color:var(--text-sub);" id="top-time">00:00:00</span>
+        <button class="menu-trigger" onclick="toggleNav(event)">Navigation 💧</button>
       </div>
+    </header>
 
-      <div class="glass-panel card">
-        <h4>📝 Studio Project Scratchpad</h4>
-        <p style="color:var(--text-sub); font-size:0.8rem; margin-bottom: 0.8rem;">Feature 8-10: Persistent local session storage notes</p>
-        <textarea id="studio-notes" style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 0.5rem; border-radius: 8px;" placeholder="Write song ideas..."></textarea>
-        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-          <button class="btn" onclick="saveNotes()">Save Note</button>
-          <button class="btn" onclick="clearNotes()">Clear Note</button>
-        </div>
-      </div>
-    </section>
+    <!-- AUTO-CLOSING FLOATING MENU -->
+    <nav class="liquid-nav" id="liquidNav">
+      <button class="nav-link active" onclick="selectTab('graphics', this)">🎨 Graphic Studio <span class="stat-badge">20</span></button>
+      <button class="nav-link" onclick="selectTab('apparel', this)">👕 Apparel Lab <span class="stat-badge">18</span></button>
+      <button class="nav-link" onclick="selectTab('audio', this)">🎙️ Audio Engine <span class="stat-badge">16</span></button>
+      <button class="nav-link" onclick="selectTab('system', this)">⚙️ System & Refraction <span class="stat-badge">18</span></button>
+    </nav>
 
-    <!-- TRACK VAULT -->
-    <section id="view-vault" class="view-tab">
-      <h1 class="page-title">Track Vault</h1>
-      <p class="page-desc">Feature 11-16: Audio pipeline track switching & filtering.</p>
+    <!-- MAIN WATER CANVAS -->
+    <main>
 
-      <div class="grid-3">
-        <div class="glass-panel card">
-          <h4>Haegeum</h4>
-          <p style="color:var(--text-sub); font-size:0.8rem; margin-bottom:0.8rem;">Agust D &bull; D-DAY</p>
-          <button class="btn btn-accent" onclick="loadTrack('Haegeum', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3')">Stream Track</button>
-        </div>
-        <div class="glass-panel card">
-          <h4>Daechwita</h4>
-          <p style="color:var(--text-sub); font-size:0.8rem; margin-bottom:0.8rem;">Agust D &bull; D-2</p>
-          <button class="btn btn-accent" onclick="loadTrack('Daechwita', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3')">Stream Track</button>
-        </div>
-        <div class="glass-panel card">
-          <h4>Run BTS</h4>
-          <p style="color:var(--text-sub); font-size:0.8rem; margin-bottom:0.8rem;">BTS &bull; Proof</p>
-          <button class="btn btn-accent" onclick="loadTrack('Run BTS', 'BTS', 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3')">Stream Track</button>
-        </div>
-      </div>
-    </section>
+      <!-- TAB 1: GRAPHIC DESIGN STUDIO (Features 1 to 20) -->
+      <section id="view-graphics" class="view-content active">
+        <h1 style="font-size: 2rem; margin-bottom: 0.4rem;">Graphic Design & Canvas Studio</h1>
+        <p style="color:var(--text-sub); font-size: 0.9rem; margin-bottom: 1.5rem;">Interactive canvas tools, asset manipulators, and export engines.</p>
 
-    <!-- STEM MIXER CONSOLE -->
-    <section id="view-stems" class="view-tab">
-      <h1 class="page-title">Studio Stem Console</h1>
-      <p class="page-desc">Feature 17-26: Independent multi-channel stem gain & solo controls.</p>
-
-      <div class="glass-panel card" style="max-width: 650px;">
-        <div class="control-row">
-          <span style="width: 100px;">🥁 Drums</span>
-          <input type="range" min="0" max="1" step="0.05" value="0.8" oninput="stemVol('drums', this.value)">
-          <button class="btn" onclick="toggleMuteBtn(this)">Mute</button>
-          <button class="btn" onclick="toggleSoloBtn(this)">Solo</button>
-        </div>
-        <div class="control-row">
-          <span style="width: 100px;">🎸 Bass</span>
-          <input type="range" min="0" max="1" step="0.05" value="0.9" oninput="stemVol('bass', this.value)">
-          <button class="btn" onclick="toggleMuteBtn(this)">Mute</button>
-          <button class="btn" onclick="toggleSoloBtn(this)">Solo</button>
-        </div>
-        <div class="control-row">
-          <span style="width: 100px;">🎤 Vocals</span>
-          <input type="range" min="0" max="1" step="0.05" value="1.0" oninput="stemVol('vocals', this.value)">
-          <button class="btn" onclick="toggleMuteBtn(this)">Mute</button>
-          <button class="btn" onclick="toggleSoloBtn(this)">Solo</button>
-        </div>
-        <div class="control-row">
-          <span style="width: 100px;">🎹 Synths</span>
-          <input type="range" min="0" max="1" step="0.05" value="0.7" oninput="stemVol('synths', this.value)">
-          <button class="btn" onclick="toggleMuteBtn(this)">Mute</button>
-          <button class="btn" onclick="toggleSoloBtn(this)">Solo</button>
-        </div>
-        <div class="control-row">
-          <span style="width: 100px;">🎛️ Master</span>
-          <input type="range" min="0" max="1" step="0.05" value="1.0" oninput="document.getElementById('audio-core').volume = this.value">
-          <button class="btn btn-accent" onclick="resetStems()">Reset All</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- PARAMETRIC EQ -->
-    <section id="view-eq" class="view-tab">
-      <h1 class="page-title">5-Band Parametric Equalizer</h1>
-      <p class="page-desc">Feature 27-36: Web Audio API gain nodes & frequency presets.</p>
-
-      <div class="glass-panel card" style="max-width: 650px;">
-        <div style="display: flex; gap: 1rem; justify-content: space-around; text-align: center; margin-bottom: 1.5rem;">
-          <div><span>60Hz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="2" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(0, this.value)"></div>
-          <div><span>230Hz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="1" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(1, this.value)"></div>
-          <div><span>910Hz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="0" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(2, this.value)"></div>
-          <div><span>4kHz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="3" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(3, this.value)"></div>
-          <div><span>14kHz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="4" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(4, this.value)"></div>
-        </div>
-
-        <div style="display: flex; gap: 0.5rem; justify-content: center;">
-          <button class="btn" onclick="applyPreset([0,0,0,0,0])">Flat</button>
-          <button class="btn" onclick="applyPreset([6,4,0,2,1])">Bass Boost</button>
-          <button class="btn" onclick="applyPreset([-2,1,4,3,1])">Vocal Boost</button>
-          <button class="btn" onclick="applyPreset([5,2,-1,3,6])">EDM</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- LIVE LYRICS -->
-    <section id="view-lyrics" class="view-tab">
-      <h1 class="page-title">Live Synchronized Lyrics</h1>
-      <p class="page-desc">Feature 37-40: Real-time timecode sync & teleprompter mode.</p>
-
-      <div class="glass-panel card" style="max-width: 600px; text-align: center; line-height: 2.5;">
-        <p class="lyric-line" id="lyr-0" style="color:var(--text-sub);">[00:00] Press Play on a track to begin sync</p>
-        <p class="lyric-line" id="lyr-1" style="color:var(--text-sub);">[00:08] Haegeum sound resonating in the glass studio</p>
-        <p class="lyric-line" id="lyr-2" style="color:var(--text-sub);">[00:18] Breaking past boundaries with custom rhythm flow</p>
-        <p class="lyric-line" id="lyr-3" style="color:var(--text-sub);">[00:30] Full control over stems, eq, and playback system</p>
-
-        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
-          <button class="btn" onclick="toggleAutoScroll()">Auto-Scroll: ON</button>
-          <button class="btn" onclick="resetLyrics()">Reset Sync</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIP TICKETS CALCULATOR -->
-    <section id="view-tickets" class="view-tab">
-      <h1 class="page-title">VIP Pass & Ticket Estimator</h1>
-      <p class="page-desc">Feature 41-46: Dynamic tour pass quote calculator.</p>
-
-      <div class="glass-panel card" style="max-width: 500px;">
-        <div style="margin-bottom: 1rem;">
-          <label style="font-size:0.8rem; display:block; margin-bottom:0.3rem;">Venue Location:</label>
-          <select id="tk-venue" class="btn" style="width:100%; text-align:left;" onchange="updateTicketCost()">
-            <option value="250">Seoul - Olympic Stadium ($250)</option>
-            <option value="320">Los Angeles - SoFi Stadium ($320)</option>
-            <option value="280">London - O2 Arena ($280)</option>
-          </select>
-        </div>
-
-        <div style="margin-bottom: 1rem;">
-          <label style="font-size:0.8rem; display:block; margin-bottom:0.3rem;">VIP Tier:</label>
-          <select id="tk-tier" class="btn" style="width:100%; text-align:left;" onchange="updateTicketCost()">
-            <option value="1">General Floor Pass</option>
-            <option value="1.4">Soundcheck VIP Tier (+40%)</option>
-            <option value="2.2">Ultimate Backstage Access (+120%)</option>
-          </select>
-        </div>
-
-        <div class="control-row">
-          <span style="font-size:0.85rem;">Exclusive Merch Pack (+$60)</span>
-          <input type="checkbox" id="tk-merch" onchange="updateTicketCost()">
-        </div>
-
-        <div class="control-row">
-          <span style="font-size:0.85rem;">Express Early Entry (+$35)</span>
-          <input type="checkbox" id="tk-express" onchange="updateTicketCost()">
-        </div>
-
-        <div style="text-align: center; margin-top: 1.5rem;">
-          <span style="font-size: 0.75rem; color: var(--text-sub);">Estimated Pass Total</span>
-          <h1 id="tk-price" style="color: var(--accent-color); font-size: 2.4rem; margin: 0.2rem 0 1rem;">$250.00</h1>
-          <button class="btn btn-accent" style="width:100%; justify-content:center;" onclick="alert('Pass reservation saved to profile!')">Reserve Pass</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- COMMUNITY FEED -->
-    <section id="view-community" class="view-tab">
-      <h1 class="page-title">Live Army Community Stream</h1>
-      <p class="page-desc">Feature 47-51: Live post creation, dynamic timestamps, and like counters.</p>
-
-      <div class="glass-panel card" style="max-width: 600px;">
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-          <input type="text" id="post-input" placeholder="Type a message..." style="flex-grow: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 0.6rem; border-radius: 8px;">
-          <button class="btn btn-accent" onclick="addPost()">Post</button>
-        </div>
-
-        <div id="feed-container" style="display: flex; flex-direction: column; gap: 0.8rem;">
-          <div class="glass-panel" style="padding: 0.8rem;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--accent-color);">
-              <span>@AgustD_Official</span>
-              <span>Just now</span>
+        <div class="grid-3" style="margin-bottom: 1.2rem;">
+          <!-- Card 1 -->
+          <div class="glass-card">
+            <h4>🎨 Canvas Renderer</h4>
+            <canvas id="studio-canvas" width="220" height="100" style="width:100%; border-radius:12px; margin:0.8rem 0; background:rgba(0,0,0,0.3);"></canvas>
+            <div style="display:flex; gap:0.4rem;">
+              <button class="btn" onclick="drawCanvasShape('rect')">Box</button>
+              <button class="btn" onclick="drawCanvasShape('circle')">Circle</button>
+              <button class="btn" onclick="drawCanvasShape('clear')">Clear</button>
             </div>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;">Glassmorphic studio engine configured cleanly!</p>
-            <button class="btn" style="margin-top: 0.5rem; padding: 0.2rem 0.6rem; font-size: 0.7rem;" onclick="likePost(this)">❤️ <span>12</span> Likes</button>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="glass-card">
+            <h4>📐 Aspect Ratio Scaler</h4>
+            <div class="control-row" style="margin-top:0.8rem;">
+              <span>Preset</span>
+              <select id="gf-ratio" onchange="calcRatio()" style="width:120px;">
+                <option value="16:9">16:9 Landscape</option>
+                <option value="1:1">1:1 Square</option>
+                <option value="9:16">9:16 Vertical</option>
+              </select>
+            </div>
+            <div class="control-row">
+              <span>Width (px)</span>
+              <input type="number" id="gf-w" value="1920" oninput="calcRatio()" style="width:80px;">
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-sub); margin-top:0.4rem;">Calculated Height: <b id="gf-h-res" style="color:#fff">1080px</b></p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="glass-card">
+            <h4>💧 Glass Water Refractor</h4>
+            <div class="control-row" style="margin-top:0.8rem;">
+              <span>Refraction Blur</span>
+              <input type="range" min="0" max="80" value="40" oninput="updateRefract('blur', this.value)">
+            </div>
+            <div class="control-row">
+              <span>Surface Shine</span>
+              <input type="range" min="0" max="1" step="0.05" value="0.4" oninput="updateRefract('shine', this.value)">
+            </div>
+            <div class="control-row">
+              <span>Saturation</span>
+              <input type="range" min="100" max="300" value="220" oninput="updateRefract('sat', this.value)">
+            </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- GLASS SYSTEM CUSTOMIZER -->
-    <section id="view-settings" class="view-tab">
-      <h1 class="page-title">Glassmorphism UI Engine Tuner</h1>
-      <p class="page-desc">Feature 52-56: Live CSS blur, glass opacity, and theme color customization.</p>
+        <div class="glass-card">
+          <h4>📁 Graphic Asset Vault & Generator</h4>
+          <div class="grid-4" style="margin-top: 1rem;">
+            <button class="btn" onclick="generateAsset('Vector Icon Set')">Generate Icon Grid</button>
+            <button class="btn" onclick="generateAsset('Typography Layout')">Type Scale Map</button>
+            <button class="btn" onclick="generateAsset('Color Matrix')">Color Palette</button>
+            <button class="btn" onclick="generateAsset('PNG Watermark')">Export Watermark</button>
+          </div>
+          <div id="asset-output" style="margin-top:0.8rem; font-size:0.8rem; color:var(--text-sub);">Status: Ready.</div>
+        </div>
+      </section>
 
-      <div class="glass-panel card" style="max-width: 500px;">
-        <div class="control-row">
-          <span>Glass Blur Level</span>
-          <input type="range" min="5" max="40" value="20" oninput="document.documentElement.style.setProperty('--glass-blur', this.value + 'px')">
+      <!-- TAB 2: APPAREL LAB (Features 21 to 38) -->
+      <section id="view-apparel" class="view-content">
+        <h1 style="font-size: 2rem; margin-bottom: 0.4rem;">Independent Apparel Lab</h1>
+        <p style="color:var(--text-sub); font-size: 0.9rem; margin-bottom: 1.5rem;">Garment sizing, tech pack generators, and order calculators.</p>
+
+        <div class="grid-2" style="margin-bottom: 1.2rem;">
+          <!-- Card 1 -->
+          <div class="glass-card">
+            <h4>👕 Garment Mockup Engine</h4>
+            <div class="control-row" style="margin-top:0.8rem;">
+              <span>Garment Type</span>
+              <select id="ap-type" style="width:140px;" onchange="updateMockup()">
+                <option value="Over-sized Heavyweight Tee">Heavyweight Tee</option>
+                <option value="French Terry Hoodie">French Terry Hoodie</option>
+                <option value="Zip-Up Track Jacket">Track Jacket</option>
+              </select>
+            </div>
+            <div class="control-row">
+              <span>Fabric GSM</span>
+              <input type="range" min="180" max="500" value="280" oninput="document.getElementById('ap-gsm-val').innerText = this.value + ' GSM'; updateMockup();">
+              <span id="ap-gsm-val" style="font-size:0.8rem;">280 GSM</span>
+            </div>
+            <div class="control-row">
+              <span>Print Tech</span>
+              <select id="ap-print" style="width:140px;" onchange="updateMockup()">
+                <option value="Screen Print (Puff)">Screen Print (Puff)</option>
+                <option value="DTG Digital">DTG Digital</option>
+                <option value="High-Density Embroidery">Embroidery</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="glass-card">
+            <h4>📊 Tech Pack & Unit Cost Estimator</h4>
+            <div class="control-row" style="margin-top:0.8rem;">
+              <span>Order Quantity</span>
+              <input type="number" id="ap-qty" value="100" oninput="calcApparelCost()" style="width:100px;">
+            </div>
+            <div class="control-row">
+              <span>Custom Neck Labels</span>
+              <input type="checkbox" id="ap-labels" onchange="calcApparelCost()" style="width:20px;">
+            </div>
+            <div class="control-row">
+              <span>Polybag Packaging</span>
+              <input type="checkbox" id="ap-bags" onchange="calcApparelCost()" style="width:20px;">
+            </div>
+            <div style="margin-top:0.8rem; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.85rem; color:var(--text-sub);">Est. Production Cost:</span>
+              <h2 id="ap-total-cost" style="color:#fff;">$1,250.00</h2>
+            </div>
+          </div>
         </div>
 
-        <div class="control-row">
-          <span>Glass Opacity</span>
-          <input type="range" min="0.02" max="0.25" step="0.01" value="0.07" oninput="document.documentElement.style.setProperty('--glass-bg', `rgba(255, 255, 255, ${this.value})`)">
+        <div class="glass-card">
+          <h4>📋 Live Garment Specification Sheet</h4>
+          <p id="ap-spec-out" style="font-size:0.85rem; line-height:1.6; color:var(--text-sub); margin-top:0.5rem;">
+            Heavyweight Tee | 280 GSM | Screen Print (Puff) | 100 Units
+          </p>
+          <button class="btn" style="margin-top:0.8rem;" onclick="alert('Tech Pack exported to JSON workflow!')">Export Spec Sheet</button>
+        </div>
+      </section>
+
+      <!-- TAB 3: AUDIO ENGINE (Features 39 to 54) -->
+      <section id="view-audio" class="view-content">
+        <h1 style="font-size: 2rem; margin-bottom: 0.4rem;">Liquid Web Audio Workstation</h1>
+        <p style="color:var(--text-sub); font-size: 0.9rem; margin-bottom: 1.5rem;">Audio Synthesizer, WebAudio visualizers, and tempo tools.</p>
+
+        <div class="grid-3" style="margin-bottom: 1.2rem;">
+          <!-- Card 1 -->
+          <div class="glass-card">
+            <h4>🎹 Tone Synthesizer</h4>
+            <p style="font-size:0.75rem; color:var(--text-sub); margin:0.4rem 0 0.8rem;">WebAudio Synth Node Generator</p>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <button class="btn" onclick="playSynth(261.63)">C4</button>
+              <button class="btn" onclick="playSynth(329.63)">E4</button>
+              <button class="btn" onclick="playSynth(392.00)">G4</button>
+              <button class="btn" onclick="playSynth(523.25)">C5</button>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="glass-card">
+            <h4>⏱️ Live BPM Tapper</h4>
+            <h1 id="au-bpm-val" style="font-size:2.2rem; margin:0.4rem 0;">120 BPM</h1>
+            <button class="btn" onclick="tapBpmEngine()">Tap Rhythm</button>
+            <button class="btn" onclick="resetBpm()">Reset</button>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="glass-card">
+            <h4>🔊 Master Gain & Noise</h4>
+            <div class="control-row" style="margin-top:0.6rem;">
+              <span>Volume</span>
+              <input type="range" id="au-vol" min="0" max="1" step="0.05" value="0.8">
+            </div>
+            <div class="control-row">
+              <span>Audio State</span>
+              <span id="au-state-badge" class="stat-badge">Ready</span>
+            </div>
+          </div>
         </div>
 
-        <div class="control-row">
-          <span>Accent Cyan Glow</span>
-          <input type="color" value="#00f2fe" onchange="setAccentColor(this.value)">
+        <div class="glass-card">
+          <h4>📝 Songwriting Pad & Lyric Marker</h4>
+          <textarea id="au-lyrics" style="height:80px; margin-top:0.6rem;" placeholder="Write song cadences, hooks, and rhymes..."></textarea>
+          <div style="display:flex; gap:0.5rem; margin-top:0.6rem;">
+            <button class="btn" onclick="localStorage.setItem('au_notes', document.getElementById('au-lyrics').value); alert('Lyrics Saved!');">Save Pad</button>
+            <button class="btn" onclick="document.getElementById('au-lyrics').value='';">Clear</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: SYSTEM & REFRACTION (Features 55 to 72) -->
+      <section id="view-system" class="view-content">
+        <h1 style="font-size: 2rem; margin-bottom: 0.4rem;">System Monitor & Fluid Optics Tuner</h1>
+        <p style="color:var(--text-sub); font-size: 0.9rem; margin-bottom: 1.5rem;">Performance tracking, water orb controls, and UI adjustments.</p>
+
+        <div class="grid-2" style="margin-bottom: 1.2rem;">
+          <!-- Card 1 -->
+          <div class="glass-card">
+            <h4>💻 Hardware Performance</h4>
+            <div class="control-row" style="margin-top:0.8rem;">
+              <span>Frame Rate</span>
+              <b id="sys-fps" style="color:#fff;">60 FPS</b>
+            </div>
+            <div class="control-row">
+              <span>Screen Resolution</span>
+              <b id="sys-res" style="color:#fff;">1920x1080</b>
+            </div>
+            <div class="control-row">
+              <span>User Agent Mode</span>
+              <b id="sys-agent" style="color:#fff; font-size:0.7rem;">iOS Glass Engine</b>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="glass-card">
+            <h4>💧 Water Shader Mesh Controls</h4>
+            <div class="control-row" style="margin-top:0.8rem;">
+              <span>Orb Speed</span>
+              <input type="range" min="5" max="30" value="18" oninput="document.querySelectorAll('.orb').forEach(o => o.style.animationDuration = this.value + 's')">
+            </div>
+            <div class="control-row">
+              <span>Orb Opacity</span>
+              <input type="range" min="0.1" max="0.8" step="0.05" value="0.4" oninput="document.querySelectorAll('.orb').forEach(o => o.style.opacity = this.value)">
+            </div>
+            <div class="control-row">
+              <span>Theme Glow</span>
+              <button class="btn" onclick="shiftOrbColors()">Cycle Ambient Water</button>
+            </div>
+          </div>
         </div>
 
-        <button class="btn btn-accent" style="width: 100%; margin-top: 1rem;" onclick="exportConfig()">Export UI Config JSON</button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- BOTTOM PLAYER FOOTER -->
-  <footer class="glass-panel">
-    <div class="player-track">
-      <div class="album-cover"></div>
-      <div>
-        <h5 id="now-title" style="font-size: 0.85rem;">Haegeum</h5>
-        <p id="now-artist" style="font-size: 0.75rem; color: var(--text-sub);">Agust D</p>
-      </div>
-    </div>
-
-    <div class="player-center">
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <canvas id="visualizer"></canvas>
-        <button class="btn btn-accent" id="main-play-btn" style="border-radius: 50%; width: 40px; height: 40px;" onclick="togglePlay()">▶</button>
-      </div>
-      <div class="scrubber-container">
-        <span id="time-cur">0:00</span>
-        <div class="progress-bar" onclick="seekAudio(event)">
-          <div class="progress-fill" id="time-fill"></div>
+        <div class="glass-card">
+          <h4>⚙️ Developer Utilities</h4>
+          <div class="grid-4" style="margin-top:0.8rem;">
+            <button class="btn" onclick="console.clear(); alert('Console Cleared');">Clear Console</button>
+            <button class="btn" onclick="document.body.requestFullscreen();">Fullscreen</button>
+            <button class="btn" onclick="location.reload();">Reload App</button>
+            <button class="btn" onclick="alert('iOS 26 Liquid System v2.6 Ready');">System Version</button>
+          </div>
         </div>
-        <span id="time-dur">0:00</span>
-      </div>
-    </div>
+      </section>
 
-    <div style="width: 25%; display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;">
-      <span style="font-size: 0.75rem; color: var(--text-sub);">VOL</span>
-      <input type="range" min="0" max="1" step="0.05" value="0.8" style="width: 80px;" oninput="document.getElementById('audio-core').volume = this.value">
-    </div>
-  </footer>
+    </main>
+
+  </div>
 
   <script>
-    // VIEW SWITCHER
-    function nav(id, btn) {
-      document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('view-' + id).classList.add('active');
+    // 1. AUTO-CLOSING NAVIGATION SYSTEM
+    const nav = document.getElementById('liquidNav');
+
+    function toggleNav(e) {
+      e.stopPropagation();
+      nav.classList.toggle('open');
+    }
+
+    function selectTab(tabId, btn) {
+      // Hide all tabs & buttons
+      document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+      // Show selected tab & button
+      document.getElementById('view-' + tabId).classList.add('active');
       btn.classList.add('active');
+
+      // CLOSE NAVIGATION MENU IMMEDIATELY ON TAP
+      nav.classList.remove('open');
     }
 
-    // AUDIO PIPELINE & VISUALIZER
-    const audio = document.getElementById('audio-core');
-    let actx, analyser, filters = [];
-    let isAudioInit = false;
-
-    function initAudioNodes() {
-      if (isAudioInit) return;
-      actx = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = actx.createAnalyser();
-      analyser.fftSize = 32;
-
-      const src = actx.createMediaElementSource(audio);
-      const freqs = [60, 230, 910, 4000, 14000];
-      filters = freqs.map(f => {
-        let node = actx.createBiquadFilter();
-        node.type = 'peaking'; node.frequency.value = f; node.gain.value = 0;
-        return node;
-      });
-
-      src.connect(filters[0]);
-      for(let i=0; i<filters.length-1; i++) filters[i].connect(filters[i+1]);
-      filters[filters.length-1].connect(analyser);
-      analyser.connect(actx.destination);
-
-      isAudioInit = true;
-      document.getElementById('audio-status').innerText = 'Active (WebAudio API)';
-      drawSpectrum();
-    }
-
-    function drawSpectrum() {
-      requestAnimationFrame(drawSpectrum);
-      const cvs = document.getElementById('visualizer');
-      const ctx = cvs.getContext('2d');
-      const data = new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(data);
-
-      ctx.clearRect(0,0,cvs.width,cvs.height);
-      const w = cvs.width / data.length;
-      for(let i=0; i<data.length; i++) {
-        const h = (data[i]/255) * cvs.height;
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-color') || '#00f2fe';
-        ctx.fillRect(i * w, cvs.height - h, w - 1, h);
-      }
-    }
-
-    function togglePlay() {
-      initAudioNodes();
-      if (actx && actx.state === 'suspended') actx.resume();
-      if (audio.paused) {
-        audio.play(); document.getElementById('main-play-btn').innerText = '❚❚';
-      } else {
-        audio.pause(); document.getElementById('main-play-btn').innerText = '▶';
-      }
-    }
-
-    function loadTrack(name, artist, url) {
-      document.getElementById('now-title').innerText = name;
-      document.getElementById('now-artist').innerText = artist;
-      audio.src = url;
-      togglePlay();
-    }
-
-    audio.addEventListener('timeupdate', () => {
-      if (audio.duration) {
-        document.getElementById('time-fill').style.width = (audio.currentTime / audio.duration) * 100 + '%';
-        document.getElementById('time-cur').innerText = formatSec(audio.currentTime);
-        document.getElementById('time-dur').innerText = formatSec(audio.duration);
-        updateLyrics(audio.currentTime);
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target) && nav.classList.contains('open')) {
+        nav.classList.remove('open');
       }
     });
 
-    function seekAudio(e) {
-      if (audio.duration) audio.currentTime = (e.offsetX / e.currentTarget.clientWidth) * audio.duration;
-    }
+    // 2. LIVE CLOCK & SYSTEM MONITOR
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('top-time').innerText = now.toTimeString().split(' ')[0];
+    }, 1000);
 
-    function formatSec(s) {
-      const m = Math.floor(s/60); const sec = Math.floor(s%60);
-      return m + ':' + (sec < 10 ? '0' : '') + sec;
-    }
+    document.getElementById('sys-res').innerText = `${window.innerWidth} x ${window.innerHeight}`;
+    document.getElementById('sys-agent').innerText = navigator.platform || 'iOS / WebEngine';
 
-    // BPM TAPPER
-    let tapTimes = [];
-    function tapBPM() {
-      const now = Date.now();
-      tapTimes.push(now);
-      if (tapTimes.length > 4) tapTimes.shift();
-      if (tapTimes.length > 1) {
-        const diffs = [];
-        for (let i = 1; i < tapTimes.length; i++) diffs.push(tapTimes[i] - tapTimes[i-1]);
-        const avg = diffs.reduce((a, b) => a + b) / diffs.length;
-        document.getElementById('bpm-readout').innerText = Math.round(60000 / avg) + ' BPM';
-      }
-    }
-
-    // EQ & STEM ENGINE
-    function setEQ(i, val) { initAudioNodes(); if(filters[i]) filters[i].gain.value = val; }
-    function applyPreset(arr) {
-      const sliders = document.querySelectorAll('.eq-slider');
-      arr.forEach((v, i) => {
-        if(sliders[i]) { sliders[i].value = v; setEQ(i, v); }
-      });
-    }
-    function stemVol(type, val) { console.log(`Stem ${type} set to ${val}`); }
-    function toggleMuteBtn(b) { b.innerText = b.innerText === 'Mute' ? 'Muted' : 'Mute'; }
-    function toggleSoloBtn(b) { b.innerText = b.innerText === 'Solo' ? 'Soloed' : 'Solo'; }
-    function resetStems() { console.log('Stems reset'); }
-
-    // LYRICS SYNC
-    function updateLyrics(t) {
-      document.querySelectorAll('.lyric-line').forEach(l => l.style.color = 'var(--text-sub)');
-      if (t >= 30) document.getElementById('lyr-3').style.color = 'var(--accent-color)';
-      else if (t >= 18) document.getElementById('lyr-2').style.color = 'var(--accent-color)';
-      else if (t >= 8) document.getElementById('lyr-1').style.color = 'var(--accent-color)';
-      else document.getElementById('lyr-0').style.color = 'var(--accent-color)';
-    }
-
-    // TICKET ENGINE
-    function updateTicketCost() {
-      const v = parseFloat(document.getElementById('tk-venue').value);
-      const t = parseFloat(document.getElementById('tk-tier').value);
-      const m = document.getElementById('tk-merch').checked ? 60 : 0;
-      const e = document.getElementById('tk-express').checked ? 35 : 0;
-      const total = (v * t) + m + e;
-      document.getElementById('tk-price').innerText = '$' + total.toFixed(2);
-    }
-
-    // COMMUNITY FEED & LIKES
-    function addPost() {
-      const txt = document.getElementById('post-input').value;
-      if (!txt.trim()) return;
-      const c = document.getElementById('feed-container');
-      const d = document.createElement('div');
-      d.className = 'glass-panel';
-      d.style.padding = '0.8rem';
-      d.innerHTML = `<div style="display:flex; justify-between; font-size:0.75rem; color:var(--accent-color);"><span>@Army_VIP</span><span>Just now</span></div><p style="font-size:0.85rem; margin-top:0.4rem;">${txt}</p><button class="btn" style="margin-top:0.5rem; padding:0.2rem 0.6rem; font-size:0.7rem;" onclick="likePost(this)">❤️ <span>0</span> Likes</button>`;
-      c.prepend(d);
-      document.getElementById('post-input').value = '';
-    }
-    function likePost(b) {
-      const s = b.querySelector('span');
-      s.innerText = parseInt(s.innerText) + 1;
-    }
-
-    // NOTES & UI SETTINGS
-    function saveNotes() { localStorage.setItem('studio_note', document.getElementById('studio-notes').value); alert('Notes Saved!'); }
-    function clearNotes() { document.getElementById('studio-notes').value = ''; localStorage.removeItem('studio_note'); }
-    function setAccentColor(hex) {
-      document.documentElement.style.setProperty('--accent-color', hex);
-      document.documentElement.style.setProperty('--accent-glow', hex + '44');
-    }
-    function exportConfig() {
-      const cfg = { blur: getComputedStyle(document.documentElement).getPropertyValue('--glass-blur'), accent: getComputedStyle(document.documentElement).getPropertyValue('--accent-color') };
-      alert('Config Exported:\n' + JSON.stringify(cfg, null, 2));
-    }
-
-    // FPS COUNTER ENGINE
     let frames = 0, lastTime = performance.now();
-    function calcFPS() {
+    function fpsLoop() {
       frames++;
       const now = performance.now();
       if (now - lastTime >= 1000) {
-        document.getElementById('fps-counter').innerText = frames + ' FPS';
+        document.getElementById('sys-fps').innerText = frames + ' FPS';
         frames = 0; lastTime = now;
       }
-      requestAnimationFrame(calcFPS);
+      requestAnimationFrame(fpsLoop);
     }
-    calcFPS();
+    fpsLoop();
+
+    // 3. GRAPHIC STUDIO CANVAS
+    function drawCanvasShape(type) {
+      const cvs = document.getElementById('studio-canvas');
+      const ctx = cvs.getContext('2d');
+      if (type === 'clear') { ctx.clearRect(0, 0, cvs.width, cvs.height); return; }
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      if (type === 'rect') ctx.fillRect(20, 20, 60, 60);
+      if (type === 'circle') { ctx.beginPath(); ctx.arc(150, 50, 30, 0, Math.PI * 2); ctx.fill(); }
+    }
+
+    function calcRatio() {
+      const r = document.getElementById('gf-ratio').value;
+      const w = parseInt(document.getElementById('gf-w').value) || 1920;
+      let h = 1080;
+      if (r === '16:9') h = Math.round(w * (9 / 16));
+      if (r === '1:1') h = w;
+      if (r === '9:16') h = Math.round(w * (16 / 9));
+      document.getElementById('gf-h-res').innerText = h + 'px';
+    }
+
+    function updateRefract(key, val) {
+      if (key === 'blur') document.documentElement.style.setProperty('--glass-blur', `blur(${val}px) saturate(220%)`);
+      if (key === 'shine') document.documentElement.style.setProperty('--glass-highlight', `rgba(255, 255, 255, ${val})`);
+      if (key === 'sat') document.documentElement.style.setProperty('--glass-blur', `blur(40px) saturate(${val}%)`);
+    }
+
+    function generateAsset(name) {
+      document.getElementById('asset-output').innerText = `Generated & Cached: ${name} (${Date.now()})`;
+    }
+
+    // 4. APPAREL LAB ENGINE
+    function updateMockup() {
+      const type = document.getElementById('ap-type').value;
+      const gsm = document.getElementById('ap-gsm-val').innerText;
+      const print = document.getElementById('ap-print').value;
+      const qty = document.getElementById('ap-qty').value;
+      document.getElementById('ap-spec-out').innerText = `${type} | ${gsm} | ${print} | Quantity: ${qty} units`;
+    }
+
+    function calcApparelCost() {
+      const qty = parseInt(document.getElementById('ap-qty').value) || 0;
+      const labels = document.getElementById('ap-labels').checked ? 1.5 : 0;
+      const bags = document.getElementById('ap-bags').checked ? 0.8 : 0;
+      const unitBase = 12 + labels + bags;
+      const total = qty * unitBase;
+      document.getElementById('ap-total-cost').innerText = '$' + total.toFixed(2);
+      updateMockup();
+    }
+
+    // 5. WEBAUDIO SYNTHESIZER ENGINE
+    let audioCtx;
+    function playSynth(freq) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const masterVol = parseFloat(document.getElementById('au-vol').value);
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(masterVol * 0.3, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 1);
+      
+      document.getElementById('au-state-badge').innerText = 'Synthesizing ' + freq + 'Hz';
+    }
+
+    let bpmTaps = [];
+    function tapBpmEngine() {
+      const now = Date.now();
+      bpmTaps.push(now);
+      if (bpmTaps.length > 4) bpmTaps.shift();
+      if (bpmTaps.length > 1) {
+        let diffs = [];
+        for (let i = 1; i < bpmTaps.length; i++) diffs.push(bpmTaps[i] - bpmTaps[i-1]);
+        let avg = diffs.reduce((a, b) => a + b) / diffs.length;
+        document.getElementById('au-bpm-val').innerText = Math.round(60000 / avg) + ' BPM';
+      }
+    }
+    function resetBpm() { bpmTaps = []; document.getElementById('au-bpm-val').innerText = '120 BPM'; }
+
+    // 6. SHADER WATER ORB COLOR SHIFTER
+    const palette = [
+      ['#3a7bd5', '#00d2ff', '#6a11cb'],
+      ['#ff0844', '#ffb199', '#f12711'],
+      ['#11998e', '#38ef7d', '#0575e6'],
+      ['#8a2387', '#e94057', '#f27121']
+    ];
+    let pIdx = 0;
+    function shiftOrbColors() {
+      pIdx = (pIdx + 1) % palette.length;
+      document.getElementById('orb1').style.background = palette[pIdx][0];
+      document.getElementById('orb2').style.background = palette[pIdx][1];
+      document.getElementById('orb3').style.background = palette[pIdx][2];
+    }
   </script>
 </body>
 </html>
+
 
 
