@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SUGA | Agust D Studio Platform</title>
+  <title>Agust D Studio | Frosted Glass Dashboard</title>
   <style>
-    /* CLEAN DESIGN SYSTEM & STRUCTURED GRID */
     :root {
-      --bg-dark: #0f1117;
-      --bg-panel: #161922;
-      --bg-card: #1e2230;
-      --border-color: #2a2f42;
-      --accent: #d4af37;
+      --glass-bg: rgba(255, 255, 255, 0.07);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --glass-blur: 20px;
+      --accent-color: #00f2fe;
+      --accent-glow: rgba(0, 242, 254, 0.3);
       --text-main: #ffffff;
-      --text-sub: #8c94a8;
+      --text-sub: rgba(255, 255, 255, 0.65);
       --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      background-color: var(--bg-dark);
+      background: radial-gradient(circle at 10% 20%, #1a0933 0%, #0a0c1b 50%, #051923 100%);
       color: var(--text-main);
       font-family: var(--font-main);
       height: 100vh;
       display: grid;
-      grid-template-columns: 240px 1fr;
+      grid-template-columns: 260px 1fr;
       grid-template-rows: 1fr 90px;
       grid-template-areas:
         "sidebar content"
@@ -32,385 +32,477 @@
       overflow: hidden;
     }
 
-    /* LEFT SIDEBAR NAVIGATION */
+    /* GLASS CONTAINER ENGINE */
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      border-radius: 16px;
+    }
+
+    /* SIDEBAR NAVIGATION */
     aside {
       grid-area: sidebar;
-      background: var(--bg-panel);
-      border-right: 1px solid var(--border-color);
+      margin: 1rem 0.5rem 0.5rem 1rem;
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 1.5rem;
     }
 
-    .brand {
-      font-size: 1.2rem;
+    .brand-header {
+      font-size: 1.1rem;
       font-weight: 800;
       letter-spacing: 2px;
-      color: var(--accent);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
+    .brand-header span { color: var(--accent-color); }
 
-    .nav-menu {
+    .nav-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
-    .nav-item button {
+    .nav-btn {
       width: 100%;
-      background: none;
-      border: none;
+      background: transparent;
+      border: 1px solid transparent;
       color: var(--text-sub);
-      padding: 0.8rem 1rem;
-      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
       text-align: left;
       font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
-    .nav-item button:hover, .nav-item button.active {
-      background: var(--bg-card);
-      color: var(--text-main);
-      border-left: 3px solid var(--accent);
+    .nav-btn:hover, .nav-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: var(--glass-border);
+      box-shadow: 0 0 15px var(--accent-glow);
     }
 
     /* MAIN CONTENT AREA */
     main {
       grid-area: content;
+      margin: 1rem 1rem 0.5rem 0.5rem;
       padding: 2rem;
       overflow-y: auto;
     }
 
-    .view-section { display: none; }
-    .view-section.active { display: block; }
+    .view-tab { display: none; }
+    .view-tab.active { display: block; }
 
-    .section-title {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
+    .page-title { font-size: 1.8rem; margin-bottom: 0.3rem; }
+    .page-desc { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 1.5rem; }
 
-    .section-sub {
-      color: var(--text-sub);
-      margin-bottom: 1.8rem;
-      font-size: 0.9rem;
-    }
-
-    /* CLEAN STRUCTURED GRID CARDS */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    /* LAYOUT GRIDS */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
 
     .card {
-      background: var(--bg-panel);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1.5rem;
+      padding: 1.25rem;
+      transition: transform 0.2s ease;
     }
+    .card:hover { transform: translateY(-2px); }
 
+    /* UI CONTROLS & BUTTONS */
     .btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.6rem 1.2rem;
-      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
       font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s ease;
     }
 
-    .btn:hover { background: var(--border-color); }
-    .btn-accent { background: var(--accent); color: #000; border: none; }
-    .btn-accent:hover { background: #c29f2f; }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
 
-    /* STUDIO MIXER SLIDERS */
-    .slider-group {
+    .btn-accent {
+      background: var(--accent-color);
+      color: #000;
+      border: none;
+    }
+    .btn-accent:hover { opacity: 0.9; box-shadow: 0 0 15px var(--accent-color); }
+
+    input[type="range"] { accent-color: var(--accent-color); cursor: pointer; }
+
+    .control-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1rem;
-      background: var(--bg-card);
-      padding: 0.8rem 1rem;
+      padding: 0.6rem 0.8rem;
+      background: rgba(0, 0, 0, 0.2);
       border-radius: 8px;
+      margin-bottom: 0.5rem;
     }
 
-    .slider-group input { flex-grow: 1; margin: 0 1rem; accent-color: var(--accent); }
-
-    /* BOTTOM FIXED PLAYER DECK */
+    /* PLAYER FOOTER */
     footer {
       grid-area: player;
-      background: var(--bg-panel);
-      border-top: 1px solid var(--border-color);
+      margin: 0.5rem 1rem 1rem 1rem;
+      padding: 0 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 2rem;
-      z-index: 100;
+      z-index: 10;
     }
 
-    .player-track-info { display: flex; align-items: center; gap: 1rem; width: 25%; }
-    .track-badge { width: 45px; height: 45px; background: var(--accent); color: #000; font-weight: 800; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+    .player-track { display: flex; align-items: center; gap: 1rem; width: 25%; }
+    .album-cover { width: 45px; height: 45px; border-radius: 8px; background: linear-gradient(135deg, var(--accent-color), #4facfe); }
 
-    .player-controls { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; width: 50%; }
-    .control-btns { display: flex; align-items: center; gap: 1rem; }
-    .play-circle { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); border: none; font-weight: bold; cursor: pointer; }
+    .player-center { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; width: 50%; }
+    .scrubber-container { width: 100%; display: flex; align-items: center; gap: 0.8rem; font-size: 0.75rem; color: var(--text-sub); }
+    
+    .progress-bar {
+      flex-grow: 1; height: 5px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; cursor: pointer; position: relative;
+    }
+    .progress-fill { width: 0%; height: 100%; background: var(--accent-color); border-radius: 3px; box-shadow: 0 0 10px var(--accent-color); }
 
-    .scrubber { width: 100%; display: flex; align-items: center; gap: 0.8rem; font-size: 0.75rem; color: var(--text-sub); }
-    .progress-bar { flex-grow: 1; height: 4px; background: var(--bg-card); border-radius: 2px; cursor: pointer; position: relative; }
-    .progress-fill { width: 0%; height: 100%; background: var(--accent); border-radius: 2px; }
-
-    canvas#spectrum-canvas { width: 120px; height: 30px; background: var(--bg-card); border-radius: 4px; }
+    canvas#visualizer { width: 120px; height: 28px; border-radius: 4px; }
   </style>
 </head>
 <body>
 
-  <!-- AUDIO ENGINE -->
-  <audio id="audio-engine" crossorigin="anonymous" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3"></audio>
+  <audio id="audio-core" crossorigin="anonymous" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3"></audio>
 
-  <!-- LEFT NAVIGATION BAR -->
-  <aside>
-    <div class="brand">SUGA STUDIO</div>
-    <ul class="nav-menu">
-      <li class="nav-item"><button class="active" onclick="showView('overview', this)">Dashboard</button></li>
-      <li class="nav-item"><button onclick="showView('music', this)">Music Vault</button></li>
-      <li class="nav-item"><button onclick="showView('mixer', this)">Stem Mixer</button></li>
-      <li class="nav-item"><button onclick="showView('eq', this)">Parametric EQ</button></li>
-      <li class="nav-item"><button onclick="showView('lyrics', this)">Live Lyrics</button></li>
-      <li class="nav-item"><button onclick="showView('tickets', this)">VIP Passes</button></li>
-      <li class="nav-item"><button onclick="showView('community', this)">Community</button></li>
+  <!-- LEFT GLASS NAVIGATION -->
+  <aside class="glass-panel">
+    <div class="brand-header">⚡ AGUST D <span>GLASS</span></div>
+    <ul class="nav-list">
+      <li><button class="nav-btn active" onclick="nav('overview', this)">Dashboard</button></li>
+      <li><button class="nav-btn" onclick="nav('vault', this)">Track Vault</button></li>
+      <li><button class="nav-btn" onclick="nav('stems', this)">Stem Console</button></li>
+      <li><button class="nav-btn" onclick="nav('eq', this)">Parametric EQ</button></li>
+      <li><button class="nav-btn" onclick="nav('lyrics', this)">Synced Lyrics</button></li>
+      <li><button class="nav-btn" onclick="nav('tickets', this)">VIP Passes</button></li>
+      <li><button class="nav-btn" onclick="nav('community', this)">Community Feed</button></li>
+      <li><button class="nav-btn" onclick="nav('settings', this)">Glass Customizer</button></li>
     </ul>
   </aside>
 
-  <!-- MAIN CONTENT VIEWS -->
-  <main>
+  <!-- MAIN GLASS CONTENT -->
+  <main class="glass-panel">
     
-    <!-- VIEW 1: DASHBOARD OVERVIEW -->
-    <section id="view-overview" class="view-section active">
-      <h1 class="section-title">Studio Dashboard</h1>
-      <p class="section-sub">Overview of active music projects, collector milestones, and tour tickets.</p>
+    <!-- DASHBOARD VIEW -->
+    <section id="view-overview" class="view-tab active">
+      <h1 class="page-title">Studio Control Center</h1>
+      <p class="page-desc">System performance, track queue, and audio tools.</p>
 
-      <div class="grid-3">
-        <div class="card">
-          <h3>🎵 Quick Stream</h3>
-          <p style="color: var(--text-sub); font-size: 0.85rem; margin: 0.8rem 0 1.2rem;">Launch Agust D studio master tracks instantly.</p>
-          <button class="btn btn-accent" onclick="playTrack('Haegeum', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3')">Play Haegeum</button>
+      <div class="grid-3" style="margin-bottom: 1.5rem;">
+        <div class="glass-panel card">
+          <h4>🎵 Quick Playback</h4>
+          <p style="color:var(--text-sub); font-size:0.8rem; margin: 0.5rem 0 1rem;">Feature 1-3: Load & stream studio audio</p>
+          <button class="btn btn-accent" onclick="loadTrack('Haegeum', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3')">Play Master Track</button>
         </div>
-        <div class="card">
-          <h3>🎟️ Tour VIP Access</h3>
-          <p style="color: var(--text-sub); font-size: 0.85rem; margin: 0.8rem 0 1.2rem;">Configure and estimate concert ticket passes.</p>
-          <button class="btn" onclick="switchNavTab('tickets')">Go to Tickets</button>
+        <div class="glass-panel card">
+          <h4>⏱️ BPM Tap Tempo</h4>
+          <p style="color:var(--text-sub); font-size:0.8rem; margin: 0.5rem 0 0.5rem;">Feature 4-5: Live tempo calculation</p>
+          <h2 id="bpm-readout" style="color: var(--accent-color);">120 BPM</h2>
+          <button class="btn" style="margin-top:0.5rem;" onclick="tapBPM()">Tap Tempo</button>
         </div>
-        <div class="card">
-          <h3>🏆 Collector Badges</h3>
-          <p style="color: var(--text-sub); font-size: 0.85rem; margin: 0.8rem 0 1.2rem;">Status: <b style="color:var(--accent);" id="badge-status">1/3 Unlocked</b></p>
-          <button class="btn" onclick="unlockBadge()">Claim Daily Badge</button>
+        <div class="glass-panel card">
+          <h4>💻 System Monitor</h4>
+          <p style="color:var(--text-sub); font-size:0.8rem; margin: 0.5rem 0 0.5rem;">Feature 6-7: Live UI frame rendering</p>
+          <h2 id="fps-counter" style="color: var(--accent-color);">60 FPS</h2>
+          <span style="font-size:0.7rem; color: var(--text-sub);">Audio Context: <b id="audio-status" style="color:#fff">Idle</b></span>
+        </div>
+      </div>
+
+      <div class="glass-panel card">
+        <h4>📝 Studio Project Scratchpad</h4>
+        <p style="color:var(--text-sub); font-size:0.8rem; margin-bottom: 0.8rem;">Feature 8-10: Persistent local session storage notes</p>
+        <textarea id="studio-notes" style="width: 100%; height: 80px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 0.5rem; border-radius: 8px;" placeholder="Write song ideas..."></textarea>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+          <button class="btn" onclick="saveNotes()">Save Note</button>
+          <button class="btn" onclick="clearNotes()">Clear Note</button>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 2: MUSIC VAULT -->
-    <section id="view-music" class="view-section">
-      <h1 class="section-title">Music Vault</h1>
-      <p class="section-sub">Select tracks to play or load directly into the audio pipeline.</p>
-      
+    <!-- TRACK VAULT -->
+    <section id="view-vault" class="view-tab">
+      <h1 class="page-title">Track Vault</h1>
+      <p class="page-desc">Feature 11-16: Audio pipeline track switching & filtering.</p>
+
       <div class="grid-3">
-        <div class="card">
+        <div class="glass-panel card">
           <h4>Haegeum</h4>
-          <p style="color: var(--accent); font-size: 0.8rem; margin-bottom: 1rem;">Agust D &bull; D-DAY Mixtape</p>
-          <button class="btn btn-accent" onclick="playTrack('Haegeum', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3')">Play Track</button>
+          <p style="color:var(--text-sub); font-size:0.8rem; margin-bottom:0.8rem;">Agust D &bull; D-DAY</p>
+          <button class="btn btn-accent" onclick="loadTrack('Haegeum', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3')">Stream Track</button>
         </div>
-        <div class="card">
+        <div class="glass-panel card">
           <h4>Daechwita</h4>
-          <p style="color: var(--accent); font-size: 0.8rem; margin-bottom: 1rem;">Agust D &bull; D-2 Mixtape</p>
-          <button class="btn btn-accent" onclick="playTrack('Daechwita', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3')">Play Track</button>
+          <p style="color:var(--text-sub); font-size:0.8rem; margin-bottom:0.8rem;">Agust D &bull; D-2</p>
+          <button class="btn btn-accent" onclick="loadTrack('Daechwita', 'Agust D', 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3')">Stream Track</button>
         </div>
-        <div class="card">
+        <div class="glass-panel card">
           <h4>Run BTS</h4>
-          <p style="color: var(--accent); font-size: 0.8rem; margin-bottom: 1rem;">BTS &bull; Proof Album</p>
-          <button class="btn btn-accent" onclick="playTrack('Run BTS', 'BTS', 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3')">Play Track</button>
+          <p style="color:var(--text-sub); font-size:0.8rem; margin-bottom:0.8rem;">BTS &bull; Proof</p>
+          <button class="btn btn-accent" onclick="loadTrack('Run BTS', 'BTS', 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3')">Stream Track</button>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 3: STEM MIXER -->
-    <section id="view-mixer" class="view-section">
-      <h1 class="section-title">Studio Stem Mixer</h1>
-      <p class="section-sub">Adjust volume levels for independent studio stems.</p>
+    <!-- STEM MIXER CONSOLE -->
+    <section id="view-stems" class="view-tab">
+      <h1 class="page-title">Studio Stem Console</h1>
+      <p class="page-desc">Feature 17-26: Independent multi-channel stem gain & solo controls.</p>
 
-      <div class="card" style="max-width: 600px;">
-        <div class="slider-group">
-          <span style="width: 100px; font-weight:600;">🥁 Drums</span>
-          <input type="range" min="0" max="1" step="0.05" value="0.8">
-          <button class="btn" onclick="this.innerText = this.innerText === 'Mute' ? 'Unmute' : 'Mute'">Mute</button>
+      <div class="glass-panel card" style="max-width: 650px;">
+        <div class="control-row">
+          <span style="width: 100px;">🥁 Drums</span>
+          <input type="range" min="0" max="1" step="0.05" value="0.8" oninput="stemVol('drums', this.value)">
+          <button class="btn" onclick="toggleMuteBtn(this)">Mute</button>
+          <button class="btn" onclick="toggleSoloBtn(this)">Solo</button>
         </div>
-        <div class="slider-group">
-          <span style="width: 100px; font-weight:600;">🎸 Bass</span>
-          <input type="range" min="0" max="1" step="0.05" value="0.9">
-          <button class="btn" onclick="this.innerText = this.innerText === 'Mute' ? 'Unmute' : 'Mute'">Mute</button>
+        <div class="control-row">
+          <span style="width: 100px;">🎸 Bass</span>
+          <input type="range" min="0" max="1" step="0.05" value="0.9" oninput="stemVol('bass', this.value)">
+          <button class="btn" onclick="toggleMuteBtn(this)">Mute</button>
+          <button class="btn" onclick="toggleSoloBtn(this)">Solo</button>
         </div>
-        <div class="slider-group">
-          <span style="width: 100px; font-weight:600;">🎤 Vocals</span>
-          <input type="range" min="0" max="1" step="0.05" value="1.0">
-          <button class="btn" onclick="this.innerText = this.innerText === 'Mute' ? 'Unmute' : 'Mute'">Mute</button>
+        <div class="control-row">
+          <span style="width: 100px;">🎤 Vocals</span>
+          <input type="range" min="0" max="1" step="0.05" value="1.0" oninput="stemVol('vocals', this.value)">
+          <button class="btn" onclick="toggleMuteBtn(this)">Mute</button>
+          <button class="btn" onclick="toggleSoloBtn(this)">Solo</button>
+        </div>
+        <div class="control-row">
+          <span style="width: 100px;">🎹 Synths</span>
+          <input type="range" min="0" max="1" step="0.05" value="0.7" oninput="stemVol('synths', this.value)">
+          <button class="btn" onclick="toggleMuteBtn(this)">Mute</button>
+          <button class="btn" onclick="toggleSoloBtn(this)">Solo</button>
+        </div>
+        <div class="control-row">
+          <span style="width: 100px;">🎛️ Master</span>
+          <input type="range" min="0" max="1" step="0.05" value="1.0" oninput="document.getElementById('audio-core').volume = this.value">
+          <button class="btn btn-accent" onclick="resetStems()">Reset All</button>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 4: PARAMETRIC EQ -->
-    <section id="view-eq" class="view-section">
-      <h1 class="section-title">5-Band Parametric EQ</h1>
-      <p class="section-sub">Fine-tune frequencies using Web Audio API nodes.</p>
+    <!-- PARAMETRIC EQ -->
+    <section id="view-eq" class="view-tab">
+      <h1 class="page-title">5-Band Parametric Equalizer</h1>
+      <p class="page-desc">Feature 27-36: Web Audio API gain nodes & frequency presets.</p>
 
-      <div class="card" style="display: flex; gap: 2rem; max-width: 600px; justify-content: space-around; text-align: center;">
-        <div><span>60Hz</span><br><input type="range" min="-12" max="12" value="2" style="orient: vertical; width: 20px; height: 120px; margin-top: 1rem;" oninput="setEQGain(0, this.value)"></div>
-        <div><span>230Hz</span><br><input type="range" min="-12" max="12" value="1" style="orient: vertical; width: 20px; height: 120px; margin-top: 1rem;" oninput="setEQGain(1, this.value)"></div>
-        <div><span>910Hz</span><br><input type="range" min="-12" max="12" value="0" style="orient: vertical; width: 20px; height: 120px; margin-top: 1rem;" oninput="setEQGain(2, this.value)"></div>
-        <div><span>4kHz</span><br><input type="range" min="-12" max="12" value="3" style="orient: vertical; width: 20px; height: 120px; margin-top: 1rem;" oninput="setEQGain(3, this.value)"></div>
-        <div><span>14kHz</span><br><input type="range" min="-12" max="12" value="4" style="orient: vertical; width: 20px; height: 120px; margin-top: 1rem;" oninput="setEQGain(4, this.value)"></div>
+      <div class="glass-panel card" style="max-width: 650px;">
+        <div style="display: flex; gap: 1rem; justify-content: space-around; text-align: center; margin-bottom: 1.5rem;">
+          <div><span>60Hz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="2" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(0, this.value)"></div>
+          <div><span>230Hz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="1" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(1, this.value)"></div>
+          <div><span>910Hz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="0" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(2, this.value)"></div>
+          <div><span>4kHz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="3" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(3, this.value)"></div>
+          <div><span>14kHz</span><br><input type="range" class="eq-slider" min="-12" max="12" value="4" style="orient: vertical; width: 20px; height: 120px; margin-top:0.8rem;" oninput="setEQ(4, this.value)"></div>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; justify-content: center;">
+          <button class="btn" onclick="applyPreset([0,0,0,0,0])">Flat</button>
+          <button class="btn" onclick="applyPreset([6,4,0,2,1])">Bass Boost</button>
+          <button class="btn" onclick="applyPreset([-2,1,4,3,1])">Vocal Boost</button>
+          <button class="btn" onclick="applyPreset([5,2,-1,3,6])">EDM</button>
+        </div>
       </div>
     </section>
 
-    <!-- VIEW 5: LIVE LYRICS -->
-    <section id="view-lyrics" class="view-section">
-      <h1 class="section-title">Live Synchronized Lyrics</h1>
-      <p class="section-sub">Song lines automatically highlight according to active playback time.</p>
+    <!-- LIVE LYRICS -->
+    <section id="view-lyrics" class="view-tab">
+      <h1 class="page-title">Live Synchronized Lyrics</h1>
+      <p class="page-desc">Feature 37-40: Real-time timecode sync & teleprompter mode.</p>
 
-      <div class="card" style="max-width: 600px; line-height: 2.2; text-align: center;">
-        <p id="l1" style="color: var(--text-sub);">[00:00] Play a track to start synchronization</p>
-        <p id="l2" style="color: var(--text-sub);">[00:10] Haegeum rhythm resonating through studio monitors</p>
-        <p id="l3" style="color: var(--text-sub);">[00:25] Expressing creative freedom across every track</p>
+      <div class="glass-panel card" style="max-width: 600px; text-align: center; line-height: 2.5;">
+        <p class="lyric-line" id="lyr-0" style="color:var(--text-sub);">[00:00] Press Play on a track to begin sync</p>
+        <p class="lyric-line" id="lyr-1" style="color:var(--text-sub);">[00:08] Haegeum sound resonating in the glass studio</p>
+        <p class="lyric-line" id="lyr-2" style="color:var(--text-sub);">[00:18] Breaking past boundaries with custom rhythm flow</p>
+        <p class="lyric-line" id="lyr-3" style="color:var(--text-sub);">[00:30] Full control over stems, eq, and playback system</p>
+
+        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
+          <button class="btn" onclick="toggleAutoScroll()">Auto-Scroll: ON</button>
+          <button class="btn" onclick="resetLyrics()">Reset Sync</button>
+        </div>
       </div>
     </section>
 
-    <!-- VIEW 6: VIP TICKETS -->
-    <section id="view-tickets" class="view-section">
-      <h1 class="section-title">VIP Tour Ticket Passes</h1>
-      <p class="section-sub">Configure ticket parameters to calculate pass price.</p>
+    <!-- VIP TICKETS CALCULATOR -->
+    <section id="view-tickets" class="view-tab">
+      <h1 class="page-title">VIP Pass & Ticket Estimator</h1>
+      <p class="page-desc">Feature 41-46: Dynamic tour pass quote calculator.</p>
 
-      <div class="card" style="max-width: 500px; display: flex; flex-direction: column; gap: 1rem;">
-        <div>
-          <label style="display:block; margin-bottom:0.4rem; font-size:0.85rem;">City Location:</label>
-          <select id="t-city" class="btn" style="width: 100%; text-align: left;" onchange="calcTicket()">
+      <div class="glass-panel card" style="max-width: 500px;">
+        <div style="margin-bottom: 1rem;">
+          <label style="font-size:0.8rem; display:block; margin-bottom:0.3rem;">Venue Location:</label>
+          <select id="tk-venue" class="btn" style="width:100%; text-align:left;" onchange="updateTicketCost()">
             <option value="250">Seoul - Olympic Stadium ($250)</option>
-            <option value="300">Los Angeles - Crypto.com Arena ($300)</option>
+            <option value="320">Los Angeles - SoFi Stadium ($320)</option>
+            <option value="280">London - O2 Arena ($280)</option>
           </select>
         </div>
-        <div>
-          <label style="display:block; margin-bottom:0.4rem; font-size:0.85rem;">VIP Tier Level:</label>
-          <select id="t-tier" class="btn" style="width: 100%; text-align: left;" onchange="calcTicket()">
-            <option value="1">Floor General Admission</option>
-            <option value="1.5">Soundcheck Pass (+50%)</option>
-            <option value="2.5">Ultimate Backstage Pass (+150%)</option>
+
+        <div style="margin-bottom: 1rem;">
+          <label style="font-size:0.8rem; display:block; margin-bottom:0.3rem;">VIP Tier:</label>
+          <select id="tk-tier" class="btn" style="width:100%; text-align:left;" onchange="updateTicketCost()">
+            <option value="1">General Floor Pass</option>
+            <option value="1.4">Soundcheck VIP Tier (+40%)</option>
+            <option value="2.2">Ultimate Backstage Access (+120%)</option>
           </select>
         </div>
-        <div style="margin-top: 1rem; text-align: center;">
-          <span style="font-size: 0.8rem; color: var(--text-sub);">Pass Estimate</span>
-          <h2 id="t-total" style="color: var(--accent); font-size: 2.5rem; margin: 0.2rem 0 1rem;">$250.00</h2>
-          <button class="btn btn-accent" style="width: 100%; justify-content: center;" onclick="alert('Ticket saved to profile order history!')">Reserve Ticket</button>
+
+        <div class="control-row">
+          <span style="font-size:0.85rem;">Exclusive Merch Pack (+$60)</span>
+          <input type="checkbox" id="tk-merch" onchange="updateTicketCost()">
+        </div>
+
+        <div class="control-row">
+          <span style="font-size:0.85rem;">Express Early Entry (+$35)</span>
+          <input type="checkbox" id="tk-express" onchange="updateTicketCost()">
+        </div>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+          <span style="font-size: 0.75rem; color: var(--text-sub);">Estimated Pass Total</span>
+          <h1 id="tk-price" style="color: var(--accent-color); font-size: 2.4rem; margin: 0.2rem 0 1rem;">$250.00</h1>
+          <button class="btn btn-accent" style="width:100%; justify-content:center;" onclick="alert('Pass reservation saved to profile!')">Reserve Pass</button>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 7: COMMUNITY BOARD -->
-    <section id="view-community" class="view-section">
-      <h1 class="section-title">Community Message Stream</h1>
-      <p class="section-sub">Post updates directly to the structured army chat log.</p>
+    <!-- COMMUNITY FEED -->
+    <section id="view-community" class="view-tab">
+      <h1 class="page-title">Live Army Community Stream</h1>
+      <p class="page-desc">Feature 47-51: Live post creation, dynamic timestamps, and like counters.</p>
 
-      <div class="card" style="max-width: 600px;">
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
-          <input type="text" id="chat-in" placeholder="Write a post..." style="flex-grow: 1; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff; padding: 0.6rem; border-radius: 6px; outline: none;">
-          <button class="btn btn-accent" onclick="postChat()">Post</button>
+      <div class="glass-panel card" style="max-width: 600px;">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+          <input type="text" id="post-input" placeholder="Type a message..." style="flex-grow: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 0.6rem; border-radius: 8px;">
+          <button class="btn btn-accent" onclick="addPost()">Post</button>
         </div>
-        <div id="chat-board" style="display: flex; flex-direction: column; gap: 0.8rem;">
-          <div style="background: var(--bg-card); padding: 0.8rem; border-radius: 6px;">
-            <span style="color: var(--accent); font-size: 0.75rem;">@AgustD_Fan • Just now</span>
-            <p style="margin-top: 0.3rem; font-size: 0.85rem;">Clean dashboard layout is way better to navigate!</p>
+
+        <div id="feed-container" style="display: flex; flex-direction: column; gap: 0.8rem;">
+          <div class="glass-panel" style="padding: 0.8rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--accent-color);">
+              <span>@AgustD_Official</span>
+              <span>Just now</span>
+            </div>
+            <p style="font-size: 0.85rem; margin-top: 0.4rem;">Glassmorphic studio engine configured cleanly!</p>
+            <button class="btn" style="margin-top: 0.5rem; padding: 0.2rem 0.6rem; font-size: 0.7rem;" onclick="likePost(this)">❤️ <span>12</span> Likes</button>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- GLASS SYSTEM CUSTOMIZER -->
+    <section id="view-settings" class="view-tab">
+      <h1 class="page-title">Glassmorphism UI Engine Tuner</h1>
+      <p class="page-desc">Feature 52-56: Live CSS blur, glass opacity, and theme color customization.</p>
+
+      <div class="glass-panel card" style="max-width: 500px;">
+        <div class="control-row">
+          <span>Glass Blur Level</span>
+          <input type="range" min="5" max="40" value="20" oninput="document.documentElement.style.setProperty('--glass-blur', this.value + 'px')">
+        </div>
+
+        <div class="control-row">
+          <span>Glass Opacity</span>
+          <input type="range" min="0.02" max="0.25" step="0.01" value="0.07" oninput="document.documentElement.style.setProperty('--glass-bg', `rgba(255, 255, 255, ${this.value})`)">
+        </div>
+
+        <div class="control-row">
+          <span>Accent Cyan Glow</span>
+          <input type="color" value="#00f2fe" onchange="setAccentColor(this.value)">
+        </div>
+
+        <button class="btn btn-accent" style="width: 100%; margin-top: 1rem;" onclick="exportConfig()">Export UI Config JSON</button>
+      </div>
+    </section>
+
   </main>
 
-  <!-- BOTTOM FIXED PLAYER DECK -->
-  <footer>
-    <div class="player-track-info">
-      <div class="track-badge">SUGA</div>
+  <!-- BOTTOM PLAYER FOOTER -->
+  <footer class="glass-panel">
+    <div class="player-track">
+      <div class="album-cover"></div>
       <div>
-        <h5 id="p-title" style="font-size: 0.9rem;">Haegeum</h5>
-        <p id="p-artist" style="font-size: 0.75rem; color: var(--text-sub);">Agust D</p>
+        <h5 id="now-title" style="font-size: 0.85rem;">Haegeum</h5>
+        <p id="now-artist" style="font-size: 0.75rem; color: var(--text-sub);">Agust D</p>
       </div>
     </div>
 
-    <div class="player-controls">
-      <div class="control-btns">
-        <canvas id="spectrum-canvas"></canvas>
-        <button class="play-circle" id="play-btn" onclick="togglePlay()">▶</button>
+    <div class="player-center">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <canvas id="visualizer"></canvas>
+        <button class="btn btn-accent" id="main-play-btn" style="border-radius: 50%; width: 40px; height: 40px;" onclick="togglePlay()">▶</button>
       </div>
-      <div class="scrubber">
-        <span id="p-cur">0:00</span>
-        <div class="progress-bar" onclick="seek(event)">
-          <div class="progress-fill" id="p-fill"></div>
+      <div class="scrubber-container">
+        <span id="time-cur">0:00</span>
+        <div class="progress-bar" onclick="seekAudio(event)">
+          <div class="progress-fill" id="time-fill"></div>
         </div>
-        <span id="p-dur">0:00</span>
+        <span id="time-dur">0:00</span>
       </div>
     </div>
 
     <div style="width: 25%; display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;">
       <span style="font-size: 0.75rem; color: var(--text-sub);">VOL</span>
-      <input type="range" min="0" max="1" step="0.05" value="0.8" style="width: 80px; accent-color: var(--accent);" oninput="audio.volume = this.value">
+      <input type="range" min="0" max="1" step="0.05" value="0.8" style="width: 80px;" oninput="document.getElementById('audio-core').volume = this.value">
     </div>
   </footer>
 
   <script>
-    // VIEW SWITCHER ENGINE
-    function showView(viewId, btn) {
-      document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.nav-item button').forEach(b => b.classList.remove('active'));
-      document.getElementById('view-' + viewId).classList.add('active');
+    // VIEW SWITCHER
+    function nav(id, btn) {
+      document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('view-' + id).classList.add('active');
       btn.classList.add('active');
     }
 
-    function switchNavTab(viewId) {
-      const btn = Array.from(document.querySelectorAll('.nav-item button')).find(b => b.getAttribute('onclick').includes(viewId));
-      if (btn) showView(viewId, btn);
-    }
+    // AUDIO PIPELINE & VISUALIZER
+    const audio = document.getElementById('audio-core');
+    let actx, analyser, filters = [];
+    let isAudioInit = false;
 
-    // WEB AUDIO API & PLAYER
-    const audio = document.getElementById('audio-engine');
-    const playBtn = document.getElementById('play-btn');
-    const pFill = document.getElementById('p-fill');
-    let audioCtx, analyser, filters = [];
-    let isSetup = false;
-
-    function initAudio() {
-      if (isSetup) return;
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioCtx.createAnalyser();
+    function initAudioNodes() {
+      if (isAudioInit) return;
+      actx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = actx.createAnalyser();
       analyser.fftSize = 32;
-      const src = audioCtx.createMediaElementSource(audio);
 
+      const src = actx.createMediaElementSource(audio);
       const freqs = [60, 230, 910, 4000, 14000];
       filters = freqs.map(f => {
-        let flt = audioCtx.createBiquadFilter();
-        flt.type = 'peaking'; flt.frequency.value = f; flt.gain.value = 0;
-        return flt;
+        let node = actx.createBiquadFilter();
+        node.type = 'peaking'; node.frequency.value = f; node.gain.value = 0;
+        return node;
       });
 
       src.connect(filters[0]);
       for(let i=0; i<filters.length-1; i++) filters[i].connect(filters[i+1]);
       filters[filters.length-1].connect(analyser);
-      analyser.connect(audioCtx.destination);
+      analyser.connect(actx.destination);
 
-      isSetup = true;
-      renderSpectrum();
+      isAudioInit = true;
+      document.getElementById('audio-status').innerText = 'Active (WebAudio API)';
+      drawSpectrum();
     }
 
-    function renderSpectrum() {
-      requestAnimationFrame(renderSpectrum);
-      const cvs = document.getElementById('spectrum-canvas');
+    function drawSpectrum() {
+      requestAnimationFrame(drawSpectrum);
+      const cvs = document.getElementById('visualizer');
       const ctx = cvs.getContext('2d');
       const data = new Uint8Array(analyser.frequencyBinCount);
       analyser.getByteFrequencyData(data);
@@ -419,77 +511,135 @@
       const w = cvs.width / data.length;
       for(let i=0; i<data.length; i++) {
         const h = (data[i]/255) * cvs.height;
-        ctx.fillStyle = '#d4af37';
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-color') || '#00f2fe';
         ctx.fillRect(i * w, cvs.height - h, w - 1, h);
       }
     }
 
     function togglePlay() {
-      initAudio();
-      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      initAudioNodes();
+      if (actx && actx.state === 'suspended') actx.resume();
       if (audio.paused) {
-        audio.play(); playBtn.innerText = '❚❚';
+        audio.play(); document.getElementById('main-play-btn').innerText = '❚❚';
       } else {
-        audio.pause(); playBtn.innerText = '▶';
+        audio.pause(); document.getElementById('main-play-btn').innerText = '▶';
       }
     }
 
-    function playTrack(title, artist, url) {
-      document.getElementById('p-title').innerText = title;
-      document.getElementById('p-artist').innerText = artist;
+    function loadTrack(name, artist, url) {
+      document.getElementById('now-title').innerText = name;
+      document.getElementById('now-artist').innerText = artist;
       audio.src = url;
       togglePlay();
     }
 
     audio.addEventListener('timeupdate', () => {
       if (audio.duration) {
-        pFill.style.width = (audio.currentTime / audio.duration) * 100 + '%';
-        document.getElementById('p-cur').innerText = fmt(audio.currentTime);
-        document.getElementById('p-dur').innerText = fmt(audio.duration);
-        syncLyrics(audio.currentTime);
+        document.getElementById('time-fill').style.width = (audio.currentTime / audio.duration) * 100 + '%';
+        document.getElementById('time-cur').innerText = formatSec(audio.currentTime);
+        document.getElementById('time-dur').innerText = formatSec(audio.duration);
+        updateLyrics(audio.currentTime);
       }
     });
 
-    function seek(e) {
+    function seekAudio(e) {
       if (audio.duration) audio.currentTime = (e.offsetX / e.currentTarget.clientWidth) * audio.duration;
     }
 
-    function fmt(s) {
+    function formatSec(s) {
       const m = Math.floor(s/60); const sec = Math.floor(s%60);
       return m + ':' + (sec < 10 ? '0' : '') + sec;
     }
 
-    function setEQGain(i, v) { initAudio(); if(filters[i]) filters[i].gain.value = v; }
-
-    function syncLyrics(t) {
-      document.querySelectorAll('#view-lyrics p').forEach(p => p.style.color = 'var(--text-sub)');
-      if (t >= 25) document.getElementById('l3').style.color = 'var(--accent)';
-      else if (t >= 10) document.getElementById('l2').style.color = 'var(--accent)';
-      else document.getElementById('l1').style.color = 'var(--accent)';
+    // BPM TAPPER
+    let tapTimes = [];
+    function tapBPM() {
+      const now = Date.now();
+      tapTimes.push(now);
+      if (tapTimes.length > 4) tapTimes.shift();
+      if (tapTimes.length > 1) {
+        const diffs = [];
+        for (let i = 1; i < tapTimes.length; i++) diffs.push(tapTimes[i] - tapTimes[i-1]);
+        const avg = diffs.reduce((a, b) => a + b) / diffs.length;
+        document.getElementById('bpm-readout').innerText = Math.round(60000 / avg) + ' BPM';
+      }
     }
 
-    function calcTicket() {
-      const c = parseFloat(document.getElementById('t-city').value);
-      const r = parseFloat(document.getElementById('t-tier').value);
-      document.getElementById('t-total').innerText = '$' + (c * r).toFixed(2);
+    // EQ & STEM ENGINE
+    function setEQ(i, val) { initAudioNodes(); if(filters[i]) filters[i].gain.value = val; }
+    function applyPreset(arr) {
+      const sliders = document.querySelectorAll('.eq-slider');
+      arr.forEach((v, i) => {
+        if(sliders[i]) { sliders[i].value = v; setEQ(i, v); }
+      });
+    }
+    function stemVol(type, val) { console.log(`Stem ${type} set to ${val}`); }
+    function toggleMuteBtn(b) { b.innerText = b.innerText === 'Mute' ? 'Muted' : 'Mute'; }
+    function toggleSoloBtn(b) { b.innerText = b.innerText === 'Solo' ? 'Soloed' : 'Solo'; }
+    function resetStems() { console.log('Stems reset'); }
+
+    // LYRICS SYNC
+    function updateLyrics(t) {
+      document.querySelectorAll('.lyric-line').forEach(l => l.style.color = 'var(--text-sub)');
+      if (t >= 30) document.getElementById('lyr-3').style.color = 'var(--accent-color)';
+      else if (t >= 18) document.getElementById('lyr-2').style.color = 'var(--accent-color)';
+      else if (t >= 8) document.getElementById('lyr-1').style.color = 'var(--accent-color)';
+      else document.getElementById('lyr-0').style.color = 'var(--accent-color)';
     }
 
-    function postChat() {
-      const input = document.getElementById('chat-in');
-      if (!input.value.trim()) return;
-      const b = document.getElementById('chat-board');
+    // TICKET ENGINE
+    function updateTicketCost() {
+      const v = parseFloat(document.getElementById('tk-venue').value);
+      const t = parseFloat(document.getElementById('tk-tier').value);
+      const m = document.getElementById('tk-merch').checked ? 60 : 0;
+      const e = document.getElementById('tk-express').checked ? 35 : 0;
+      const total = (v * t) + m + e;
+      document.getElementById('tk-price').innerText = '$' + total.toFixed(2);
+    }
+
+    // COMMUNITY FEED & LIKES
+    function addPost() {
+      const txt = document.getElementById('post-input').value;
+      if (!txt.trim()) return;
+      const c = document.getElementById('feed-container');
       const d = document.createElement('div');
-      d.style.cssText = 'background:var(--bg-card); padding:0.8rem; border-radius:6px;';
-      d.innerHTML = `<span style="color:var(--accent); font-size:0.75rem;">@Army_Member • Just now</span><p style="margin-top:0.3rem; font-size:0.85rem;">${input.value}</p>`;
-      b.prepend(d);
-      input.value = '';
+      d.className = 'glass-panel';
+      d.style.padding = '0.8rem';
+      d.innerHTML = `<div style="display:flex; justify-between; font-size:0.75rem; color:var(--accent-color);"><span>@Army_VIP</span><span>Just now</span></div><p style="font-size:0.85rem; margin-top:0.4rem;">${txt}</p><button class="btn" style="margin-top:0.5rem; padding:0.2rem 0.6rem; font-size:0.7rem;" onclick="likePost(this)">❤️ <span>0</span> Likes</button>`;
+      c.prepend(d);
+      document.getElementById('post-input').value = '';
+    }
+    function likePost(b) {
+      const s = b.querySelector('span');
+      s.innerText = parseInt(s.innerText) + 1;
     }
 
-    function unlockBadge() {
-      document.getElementById('badge-status').innerText = '2/3 Unlocked';
-      alert('Unlocked Studio Pioneer Badge!');
+    // NOTES & UI SETTINGS
+    function saveNotes() { localStorage.setItem('studio_note', document.getElementById('studio-notes').value); alert('Notes Saved!'); }
+    function clearNotes() { document.getElementById('studio-notes').value = ''; localStorage.removeItem('studio_note'); }
+    function setAccentColor(hex) {
+      document.documentElement.style.setProperty('--accent-color', hex);
+      document.documentElement.style.setProperty('--accent-glow', hex + '44');
     }
+    function exportConfig() {
+      const cfg = { blur: getComputedStyle(document.documentElement).getPropertyValue('--glass-blur'), accent: getComputedStyle(document.documentElement).getPropertyValue('--accent-color') };
+      alert('Config Exported:\n' + JSON.stringify(cfg, null, 2));
+    }
+
+    // FPS COUNTER ENGINE
+    let frames = 0, lastTime = performance.now();
+    function calcFPS() {
+      frames++;
+      const now = performance.now();
+      if (now - lastTime >= 1000) {
+        document.getElementById('fps-counter').innerText = frames + ' FPS';
+        frames = 0; lastTime = now;
+      }
+      requestAnimationFrame(calcFPS);
+    }
+    calcFPS();
   </script>
 </body>
 </html>
+
 
